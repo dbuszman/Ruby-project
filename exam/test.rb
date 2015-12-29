@@ -59,9 +59,50 @@ class UserData
     travel_time
   end
 
+  def time_to_arrive
+    puts 'At what time do you want to get to your destination? (HH-MM)'
+    arrive_time = gets.chomp
+    arrive_time
+  end
+
+  def arr_arrive
+    arr_time = time_to_arrive.split(/-/)
+    arr_time
+  end
+
   def calculate_route_time
     route_time = casual_travel_time * Traffic.new.traffic_time_multiple
-    puts 'Your route time = ' + route_time.to_s
+    route_time
+  end
+
+  def convert_minutes_to_hours(time)
+    hour = 0
+    (time >= 60) && (hour = time / 60)
+    hour
+  end
+
+  def rest_of_minutes(time)
+    minutes = time % 60
+    minutes
+  end
+
+  def calculated_arrive_time
+    arrive_time_arr = arr_arrive
+    route_time = calculate_route_time
+    arrive_hour = arrive_time_arr[0].to_i
+    arrive_minutes = arrive_time_arr[1].to_i
+
+    hours_to_go = arrive_hour - convert_minutes_to_hours(route_time)
+    if hours_to_go < 0
+      hours_to_go = 24 + hours_to_go
+    end
+    minutes_to_go = arrive_minutes - rest_of_minutes(route_time)
+    if (minutes_to_go) < 0
+      minutes_to_go = 60 + minutes_to_go
+      hours_to_go -= 1
+    end
+
+    puts 'You should go at: ' + hours_to_go.to_s + '-' + minutes_to_go.to_s
   end
 end
 
@@ -72,4 +113,6 @@ puts TimeGetter.day_of_week
 # puts Traffic.new.traffic_jam_hour
 # puts Traffic.new.traffic_time_multiple.to_s
 
-UserData.new.calculate_route_time
+UserData.new.calculated_arrive_time
+
+# puts UserData.new.time_to_arrive
