@@ -51,9 +51,25 @@ class Traffic
   end
 end
 
+# Get data from user and calculate
+class UserData
+  def casual_travel_time
+    puts 'How long do you usually passes your route (in minutes)?'
+    travel_time = gets.chomp.to_i
+    travel_time
+  end
+
+  def calculate_route_time
+    route_time = casual_travel_time * Traffic.new.traffic_time_multiple
+    puts 'Your route time = ' + route_time.to_s
+  end
+end
 
 puts 'Today is: ' + TimeGetter.current_date
 puts TimeGetter.day_of_week
-puts TimeGetter.current_hour.to_s
-puts Traffic.new.traffic_jam_hour
-puts Traffic.new.traffic_time_multiple.to_s
+
+# puts TimeGetter.current_hour.to_s
+# puts Traffic.new.traffic_jam_hour
+# puts Traffic.new.traffic_time_multiple.to_s
+
+UserData.new.calculate_route_time
