@@ -27,3 +27,35 @@ class TimeGetter
     @time.hour
   end
 end
+
+# Prepare data for calculate
+class PrepareData
+  def casual_travel_time(time)
+    travel_time = time.to_i
+    travel_time
+  end
+
+  def arrival_time_to_array(time)
+    arr_time = time.split(/-/).to_i
+    arr_time
+  end
+
+  def convert_minutes_to_hours(time)
+    hour = 0
+    (time >= 60) && (hour = time / 60)
+    hour
+  end
+
+  def rest_of_minutes(time)
+    minutes = time % 60
+    minutes
+  end
+end
+
+# Check data
+class ValidData
+  def valid_hours(hour)
+    return if hour >= 0 && hour < 24
+    raise ArgumentError, 'Invalid hour'
+  end
+end
