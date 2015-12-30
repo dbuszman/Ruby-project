@@ -146,20 +146,20 @@ end
 
 # Calculate time to go
 class CalculateTime
-  def calculate_route_time(casual_time, arrival_hour)
+  def calculate_route_time(casual_time, arrival_hour, choose)
     route_time = PrepareData.new.casual_travel_time(casual_time) *
-                 Traffic.new.traffic_time_multiple(arrival_hour)
+                 Traffic.new.traffic_time_multiple(arrival_hour, choose)
     route_time
   end
 
-  def calculate_time_to_go(time, casual_time)
+  def calculate_time_to_go(time, casual_time, choose)
     arrive_time_arr = PrepareData.new.arrival_time_to_array(time)
 
     arrive_hour = arrive_time_arr[0]
     arrive_minutes = arrive_time_arr[1]
 
     route_time = CalculateTime.new.calculate_route_time(casual_time,
-                                                        arrive_hour).to_i
+                                                        arrive_hour, choose).to_i
 
     hours_to_go = arrive_hour - PrepareData.new
                                 .convert_minutes_to_hours(route_time)
