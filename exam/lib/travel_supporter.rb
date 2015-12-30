@@ -23,8 +23,32 @@ class TimeGetter
     day
   end
 
-  def self.current_hour
-    @time.hour
+  def self.current_time
+    time_array = [@time.hour, @time.min]
+    time_array
+  end
+
+  def today_or_tommorow(choose)
+    choose = choose.to_i
+    if (choose == 1)
+      return true
+    else
+      return false
+    end
+  end
+
+  def check_today_time(calculated_time)
+    calculated_time_arr = PrepareData.new.arrival_time_to_array(calculated_time)
+    current_time_arr = self.class.current_time
+
+    if current_time_arr[0] == calculated_time_arr[0] &&
+       current_time_arr[1] < calculated_time_arr[1]
+      return true
+    elsif current_time_arr[0] < calculated_time_arr[0]
+      return true
+    else
+      return false
+    end
   end
 end
 
@@ -36,7 +60,7 @@ class PrepareData
   end
 
   def arrival_time_to_array(time)
-    arr_time = time.split(/-/)
+    arr_time = time.split(/-/).map(&:to_i)
     arr_time
   end
 
@@ -99,8 +123,8 @@ class CalculateTime
   def calculate_time_to_go(time, casual_time)
     arrive_time_arr = PrepareData.new.arrival_time_to_array(time)
 
-    arrive_hour = arrive_time_arr[0].to_i
-    arrive_minutes = arrive_time_arr[1].to_i
+    arrive_hour = arrive_time_arr[0]
+    arrive_minutes = arrive_time_arr[1]
 
     route_time = CalculateTime.new.calculate_route_time(casual_time,
                                                         arrive_hour).to_i
@@ -122,3 +146,5 @@ class CalculateTime
     time_to_go
   end
 end
+
+puts TimeGetter.new.check_today_time('22-52')
