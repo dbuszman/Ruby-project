@@ -28,15 +28,20 @@ class TimeGetter
     time_array
   end
 
-  def today_or_tommorow(choose)
+  def self.today_or_tommorow(choose)
     choose = choose.to_i
     if (choose == 1)
-      return true
+      return @time.wday
     else
-      return false
+      if (@time.wday == 6)
+        return 0
+      else
+        return @time.wday + 1
+      end
     end
   end
 
+  # This method compare calculated time with current time
   def check_today_time(calculated_time)
     calculated_time_arr = PrepareData.new.arrival_time_to_array(calculated_time)
     current_time_arr = self.class.current_time
@@ -49,6 +54,17 @@ class TimeGetter
     else
       return false
     end
+  end
+
+  def check_day_of_week(choose)
+    day = self.class.today_or_tommorow(choose)
+
+    kind_of_day = case day
+                  when 0, 6 then 'weekend'
+                  else 'workday'
+                  end
+
+    kind_of_day
   end
 end
 
@@ -91,7 +107,17 @@ end
 
 # Information about traffic
 class Traffic
-  def traffic_jam_hour(arrival_hour)
+  def traffic_jam_hour_weekend(arrival_hour)
+    traffic = case arrival_hour
+              when 8..11 then 'Possible'
+              when 12..15 then 'Traffic'
+              when 16..18 then 'Possible'
+              else 'False'
+              end
+    traffic
+  end
+
+  def traffic_jam_hour_workday(arrival_hour)
     traffic = case arrival_hour
               when 6, 9, 13 then 'Possible'
               when 7..8 then 'Traffic'
@@ -102,8 +128,14 @@ class Traffic
     traffic
   end
 
-  def traffic_time_multiple(arrival_hour)
-    multiple = case traffic_jam_hour(arrival_hour)
+  def traffic_time_multiple(arrival_hour, choose)
+    kind_of_day = TimeGetter.new.check_day_of_week(choose)
+    if (kind_of_day == 'weekend')
+      traffic_jam_hour = traffic_jam_hour_weekend(arrival_hour)
+    else
+      traffic_jam_hour = traffic_jam_hour_workday(arrival_hour)
+    end
+    multiple = case traffic_jam_hour
                when 'Possible' then 1.5
                when 'Traffic' then 2.5
                else 1
@@ -146,5 +178,3 @@ class CalculateTime
     time_to_go
   end
 end
-
-puts TimeGetter.new.check_today_time('22-52')
