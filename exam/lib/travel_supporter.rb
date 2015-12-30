@@ -36,7 +36,7 @@ class PrepareData
   end
 
   def arrival_time_to_array(time)
-    arr_time = time.split(/-/).to_i
+    arr_time = time.split(/-/)
     arr_time
   end
 
@@ -56,6 +56,69 @@ end
 class ValidData
   def valid_hours(hour)
     return if hour >= 0 && hour < 24
-    raise ArgumentError, 'Invalid hour'
+    fail ArgumentError, 'Invalid hour'
+  end
+
+  def valid_minutes(minutes)
+    return if minutes >= 0 && minutes < 60
+    fail ArgumentError, 'Invalid minutes'
+  end
+end
+
+# Information about traffic
+class Traffic
+  def traffic_jam_hour(arrival_hour)
+    traffic = case arrival_hour
+              when 6, 9, 13 then 'Possible'
+              when 7..8 then 'Traffic'
+              when 14..16 then 'Traffic'
+              when 17..18 then 'Possible'
+              else 'False'
+              end
+    traffic
+  end
+
+  def traffic_time_multiple(arrival_hour)
+    multiple = case traffic_jam_hour(arrival_hour)
+               when 'Possible' then 1.5
+               when 'Traffic' then 2.5
+               else 1
+               end
+    multiple
+  end
+end
+
+# Calculate time to go
+class CalculateTime
+  def calculate_route_time(casual_time, arrival_hour)
+    route_time = PrepareData.new.casual_travel_time(casual_time) *
+                 Traffic.new.traffic_time_multiple(arrival_hour)
+    route_time
+  end
+
+  def calculate_time_to_go(time, casual_time)
+    arrive_time_arr = PrepareData.new.arrival_time_to_array(time)
+
+    arrive_hour = arrive_time_arr[0].to_i
+    arrive_minutes = arrive_time_arr[1].to_i
+
+    route_time = CalculateTime.new.calculate_route_time(casual_time,
+                                                        arrive_hour).to_i
+
+    hours_to_go = arrive_hour - PrepareData.new
+                                .convert_minutes_to_hours(route_time)
+
+    hours_to_go = 24 + hours_to_go if hours_to_go < 0
+
+    minutes_to_go = arrive_minutes - PrepareData.new
+                                     .rest_of_minutes(route_time)
+
+    if (minutes_to_go) < 0
+      minutes_to_go = 60 + minutes_to_go
+      hours_to_go -= 1
+    end
+
+    time_to_go = hours_to_go.to_s + '-' + minutes_to_go.to_s
+    time_to_go
   end
 end
