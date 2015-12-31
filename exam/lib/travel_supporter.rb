@@ -205,7 +205,10 @@ class CalculateTime
 
     if (minutes_to_go) < 0
       minutes_to_go = 60 + minutes_to_go
+
       hours_to_go -= 1
+      return hours_to_go if (hours_to_go) >= 0
+      hours_to_go = 24 + hours_to_go
     end
 
     time_to_go = hours_to_go.to_s + '-' + minutes_to_go.to_s
