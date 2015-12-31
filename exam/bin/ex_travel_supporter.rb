@@ -8,11 +8,40 @@ puts 'Travel Supporter - Asystent podróży'
 
 puts "\n\n"
 
-puts 'Sprawdzasz dla dzisiaj - wciśnij 1,' \
+puts 'Sprawdź godzinę wyjazdu, podaj datę' \
   "\n" \
-  'dla jutra - wciśnij dowolny klawisz'
+  'Podaj dzień lub pozostaw puste dla dzisiejszej daty'
 
-choose = gets.chomp
+day = gets.chomp
+
+if PrepareData.new.check_empty_string(day) == true
+  day = TimeGetter.day_getter('')
+  month = TimeGetter.month_getter('')
+  year = TimeGetter.year_getter('')
+  today = true
+else
+  today = false
+  day = TimeGetter.day_getter(day)
+  puts 'Podaj miesiąc lub pozostaw puste dla biężacego miesiąca i roku'
+
+  month = gets.chomp
+
+  if PrepareData.new.check_empty_string(month) == true
+    month = TimeGetter.month_getter('')
+    year = TimeGetter.year_getter('')
+  else
+    month = TimeGetter.month_getter('')
+    puts 'Podaj rok lub pozostaw puste dla roku'
+
+    year = gets.chomp
+
+    if PrepareData.new.check_empty_string(year) == true
+      year = TimeGetter.year_getter('')
+    else
+      year = TimeGetter.year_getter('')
+    end
+  end
+end
 
 puts "\n"
 
@@ -30,13 +59,14 @@ puts "\n"
 
 if ValidData.new.valid_hours(time) == true &&
    ValidData.new.valid_minutes(time) == true
-  calculated_time = CalculateTime.
-                    new.calculate_time_to_go(time, casual_time, choose)
+  calculated_time = CalculateTime
+                    .new.calculate_time_to_go(time, casual_time,
+                                              year, month, day)
 end
 
 time_to_go = 'Aby zdążyć powinieneś wyruszyć o: ' + calculated_time
 
-if choose == '1' && TimeGetter.new.check_today_time(calculated_time) == false
+if today == true && TimeGetter.new.check_today_time(calculated_time) == false
   puts 'Niestety ale godzina proponowanego odjazdu już minęła'
 else
   puts time_to_go

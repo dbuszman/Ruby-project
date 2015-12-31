@@ -76,6 +76,15 @@ end
 
 # Prepare data for calculate
 class PrepareData
+  def check_empty_string(string)
+    string = string.strip
+    if string == ''
+      true
+    else
+      false
+    end
+  end
+
   def casual_travel_time(time)
     travel_time = time.to_i
     travel_time
