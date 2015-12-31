@@ -109,6 +109,14 @@ end
 
 # Check data
 class ValidData
+  def valid_arrival_time(time)
+    if /(\d{2}-\d{2})/.match(time)
+      true
+    else
+      fail ArgumentError, 'Invalid time format'
+    end
+  end
+
   def valid_hours(time)
     arrive_time_arr = PrepareData.new.arrival_time_to_array(time)
     hour = arrive_time_arr[0]

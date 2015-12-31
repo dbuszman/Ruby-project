@@ -30,7 +30,7 @@ else
     month = TimeGetter.month_getter('')
     year = TimeGetter.year_getter('')
   else
-    month = TimeGetter.month_getter('')
+    month = TimeGetter.month_getter(month)
     puts 'Podaj rok lub pozostaw puste dla roku'
 
     year = gets.chomp
@@ -38,7 +38,7 @@ else
     if PrepareData.new.check_empty_string(year) == true
       year = TimeGetter.year_getter('')
     else
-      year = TimeGetter.year_getter('')
+      year = TimeGetter.year_getter(year)
     end
   end
 end
@@ -57,7 +57,8 @@ time = gets.chomp
 
 puts "\n"
 
-if ValidData.new.valid_hours(time) == true &&
+if ValidData.new.valid_arrival_time(time) == true &&
+   ValidData.new.valid_hours(time) == true &&
    ValidData.new.valid_minutes(time) == true
   calculated_time = CalculateTime
                     .new.calculate_time_to_go(time, casual_time,
