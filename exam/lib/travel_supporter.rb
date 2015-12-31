@@ -1,5 +1,7 @@
 #!/usr/bin/ruby -w
 
+require 'date'
+
 # Get time data
 class TimeGetter
   @time = Time.new
@@ -20,17 +22,8 @@ class TimeGetter
     time_array
   end
 
-  def self.today_or_tommorow(choose)
-    choose = choose.to_i
-    if (choose == 1)
-      return @time.wday
-    else
-      if (@time.wday == 6)
-        return 0
-      else
-        return @time.wday + 1
-      end
-    end
+  def weekday(y, m, d)
+    Date.new(y, m, d).wday
   end
 
   def self.day_getter(day)
@@ -69,8 +62,8 @@ class TimeGetter
     end
   end
 
-  def check_day_of_week(choose)
-    day = self.class.today_or_tommorow(choose)
+  def check_day_of_week(y, m, d)
+    day = weekday(y, m, d)
 
     kind_of_day = case day
                   when 0, 6 then 'weekend'
@@ -151,8 +144,8 @@ class Traffic
     traffic
   end
 
-  def traffic_time_multiple(arrival_hour, choose)
-    kind_of_day = TimeGetter.new.check_day_of_week(choose)
+  def traffic_time_multiple(arrival_hour, y, m, d)
+    kind_of_day = TimeGetter.new.check_day_of_week(y, m, d)
     if (kind_of_day == 'weekend')
       traffic_jam_hour = traffic_jam_hour_weekend(arrival_hour)
     else
@@ -169,20 +162,21 @@ end
 
 # Calculate time to go
 class CalculateTime
-  def calculate_route_time(casual_time, arrival_hour, choose)
+  def calculate_route_time(casual_time, arrival_hour, y, m, d)
     route_time = PrepareData.new.casual_travel_time(casual_time) *
-                 Traffic.new.traffic_time_multiple(arrival_hour, choose)
+                 Traffic.new.traffic_time_multiple(arrival_hour, y, m, d)
     route_time
   end
 
-  def calculate_time_to_go(time, casual_time, choose)
+  def calculate_time_to_go(time, casual_time, y, m, d)
     arrive_time_arr = PrepareData.new.arrival_time_to_array(time)
 
     arrive_hour = arrive_time_arr[0]
     arrive_minutes = arrive_time_arr[1]
 
     route_time = CalculateTime.new.calculate_route_time(casual_time,
-                                                        arrive_hour, choose).to_i
+                                                        arrive_hour,
+                                                        y, m, d).to_i
 
     hours_to_go = arrive_hour - PrepareData.new
                                 .convert_minutes_to_hours(route_time)
