@@ -11,15 +11,7 @@ class TimeGetter
   end
 
   def self.day_of_week
-    day = case @time.wday
-          when 0 then 'Sunday'
-          when 1 then 'Monday'
-          when 2 then 'Tuesday'
-          when 3 then 'Wednesday'
-          when 4 then 'Thursday'
-          when 5 then 'Friday'
-          when 6 then 'Saturday'
-          end
+    day = @time.strftime('%A')
     day
   end
 
@@ -185,7 +177,7 @@ class CalculateTime
     end
 
     time_to_go = hours_to_go.to_s + '-' + minutes_to_go.to_s
-    
+
     time_to_go
   end
 end
