@@ -95,13 +95,19 @@ end
 # Check data
 class ValidData
   def valid_hours(hour)
-    return if hour >= 0 && hour < 24
-    fail ArgumentError, 'Invalid hour'
+    if hour < 0 && hour >= 24
+      fail ArgumentError, 'Invalid hour'
+    else
+      true
+    end
   end
 
   def valid_minutes(minutes)
-    return if minutes >= 0 && minutes < 60
-    fail ArgumentError, 'Invalid minutes'
+    if minutes < 0 && minutes >= 60
+      fail ArgumentError, 'Invalid minutes'
+    else
+      true
+    end
   end
 end
 
