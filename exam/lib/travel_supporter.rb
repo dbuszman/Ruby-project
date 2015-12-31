@@ -33,6 +33,27 @@ class TimeGetter
     end
   end
 
+  def self.day_getter(day)
+    day = day.strip
+    return day.to_i if day != ''
+    day = @time.day
+    day
+  end
+
+  def self.month_getter(month)
+    month = month.strip
+    return month.to_i if month != ''
+    month = @time.month
+    month
+  end
+
+  def self.year_getter(year)
+    year = year.strip
+    return year.to_i if year != ''
+    year = @time.year
+    year
+  end
+
   # This method compare calculated time with current time
   def check_today_time(calculated_time)
     calculated_time_arr = PrepareData.new.arrival_time_to_array(calculated_time)
