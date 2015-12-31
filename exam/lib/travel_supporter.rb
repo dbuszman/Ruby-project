@@ -94,16 +94,20 @@ end
 
 # Check data
 class ValidData
-  def valid_hours(hour)
-    if hour < 0 && hour >= 24
+  def valid_hours(time)
+    arrive_time_arr = PrepareData.new.arrival_time_to_array(time)
+    hour = arrive_time_arr[0]
+    if hour < 0 || hour >= 24
       fail ArgumentError, 'Invalid hour'
     else
       true
     end
   end
 
-  def valid_minutes(minutes)
-    if minutes < 0 && minutes >= 60
+  def valid_minutes(time)
+    arrive_time_arr = PrepareData.new.arrival_time_to_array(time)
+    minutes = arrive_time_arr[1]
+    if minutes < 0 || minutes >= 60
       fail ArgumentError, 'Invalid minutes'
     else
       true
@@ -181,6 +185,7 @@ class CalculateTime
     end
 
     time_to_go = hours_to_go.to_s + '-' + minutes_to_go.to_s
+    
     time_to_go
   end
 end
