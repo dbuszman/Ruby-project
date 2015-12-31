@@ -12,9 +12,8 @@ class TimeGetter
       @time.day.to_s
   end
 
-  def self.day_of_week
-    day = @time.strftime('%A')
-    day
+  def weekday_name(y, m, d)
+    Date.new(y, m, d).strftime('%A')
   end
 
   def self.current_time

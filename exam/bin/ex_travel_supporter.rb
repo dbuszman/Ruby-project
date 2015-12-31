@@ -65,10 +65,20 @@ if ValidData.new.valid_arrival_time(time) == true &&
                                               year, month, day)
 end
 
+puts 'Sprawdzasz proponowaną godzinę wyjazdu dla dnia: ' +
+  day.to_s + '-' + month.to_s + '-' + year.to_s + ', ' +
+  TimeGetter.new.weekday_name(year, month, day)
+
+puts "\n"
+
 time_to_go = 'Aby zdążyć powinieneś wyruszyć o: ' + calculated_time
 
-if today == true && TimeGetter.new.check_today_time(calculated_time) == false
+if today == true &&
+   TimeGetter.new.check_today_time(calculated_time) == false
+
   puts 'Niestety ale godzina proponowanego odjazdu już minęła'
 else
   puts time_to_go
 end
+
+puts "\n"
