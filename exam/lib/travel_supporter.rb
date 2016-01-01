@@ -66,6 +66,7 @@ class TimeGetter
       return true
     end
   end
+
   # This method compare calculated time with current time
   def check_today_time(calculated_time)
     calculated_time_arr = PrepareData.new.arrival_time_to_array(calculated_time)
@@ -226,9 +227,8 @@ class CalculateTime
       minutes_to_go = 60 + minutes_to_go
 
       hours_to_go -= 1
-      if hours_to_go < 0
-        hours_to_go = 24 + hours_to_go
-      end
+
+      hours_to_go = 24 + hours_to_go if hours_to_go < 0
     end
     time_to_go = hours_to_go.to_s + '-' + minutes_to_go.to_s
 
