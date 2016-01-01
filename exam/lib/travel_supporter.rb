@@ -6,10 +6,16 @@ require 'date'
 class TimeGetter
   @time = Time.new
 
-  def self.current_date
-    @time.year.to_s + '-' +
-      @time.month.to_s + '-' +
-      @time.day.to_s
+  def self.current_year
+    @time.year
+  end
+
+  def self.current_month
+    @time.month
+  end
+
+  def self.current_day
+    @time.day
   end
 
   def weekday_name(y, m, d)
