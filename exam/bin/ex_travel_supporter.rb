@@ -73,10 +73,11 @@ puts "\n"
 
 time_to_go = 'Aby zdążyć powinieneś wyruszyć o: ' + calculated_time
 
-if today == true &&
-   TimeGetter.new.check_today_time(calculated_time) == false
+if (today == true &&
+   TimeGetter.new.check_today_time(calculated_time) == false) ||
+   TimeGetter.new.check_date(year, month, day) == false
 
-  puts 'Niestety ale godzina proponowanego odjazdu już minęła'
+  puts 'Niestety ale proponowana godzina odjazdu już minęła'
 else
   puts time_to_go
 end

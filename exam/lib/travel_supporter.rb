@@ -52,6 +52,20 @@ class TimeGetter
     year
   end
 
+  def check_date(year, month, day)
+    if year < self.class.current_year
+      return false
+    elsif year == self.class.current_year &&
+          month < self.class.current_month
+      return false
+    elsif year == self.class.current_year &&
+          month == self.class.current_month &&
+          day < self.class.current_day
+      return false
+    else
+      return true
+    end
+  end
   # This method compare calculated time with current time
   def check_today_time(calculated_time)
     calculated_time_arr = PrepareData.new.arrival_time_to_array(calculated_time)
@@ -212,12 +226,12 @@ class CalculateTime
       minutes_to_go = 60 + minutes_to_go
 
       hours_to_go -= 1
-      return hours_to_go if (hours_to_go) >= 0
-      hours_to_go = 24 + hours_to_go
+      if hours_to_go < 0
+        hours_to_go = 24 + hours_to_go
+      end
     end
-
     time_to_go = hours_to_go.to_s + '-' + minutes_to_go.to_s
 
-    time_to_go
+    time_to_go.to_s
   end
 end
