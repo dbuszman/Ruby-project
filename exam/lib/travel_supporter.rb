@@ -1,5 +1,3 @@
-#!/usr/bin/ruby -w
-
 require 'date'
 
 # Get time data
@@ -112,6 +110,7 @@ class PrepareData
 
   def arrival_time_to_array(time)
     arr_time = time.split(/-/).map(&:to_i)
+    arr_time.push(0) if arr_time.size == 1
     arr_time
   end
 
@@ -130,7 +129,12 @@ end
 # Check data
 class ValidData
   def valid_arrival_time(time)
-    if /(\d{2}-\d{2})/.match(time)
+    if /(\d{2}-\d{2})/.match(time) &&
+       valid_hours(time) == true &&
+       valid_minutes(time) == true
+      true
+    elsif /(\d{2})/.match(time) &&
+          valid_hours(time) == true
       true
     else
       fail ArgumentError, 'Invalid time format'

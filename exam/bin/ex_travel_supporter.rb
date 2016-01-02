@@ -51,15 +51,13 @@ casual_time = gets.chomp
 
 puts "\n"
 
-puts 'Podaj godzinę o której chcesz dotrzeć do celu (HH-MM)'
+puts 'Podaj godzinę o której chcesz dotrzeć do celu (HH-MM lub HH)'
 
 time = gets.chomp
 
 puts "\n"
 
-if ValidData.new.valid_arrival_time(time) == true &&
-   ValidData.new.valid_hours(time) == true &&
-   ValidData.new.valid_minutes(time) == true
+if ValidData.new.valid_arrival_time(time) == true
   calculated_time = CalculateTime
                     .new.calculate_time_to_go(time, casual_time,
                                               year, month, day)
