@@ -14,7 +14,8 @@ puts 'Sprawdź godzinę wyjazdu, podaj datę' \
 
 day = gets.chomp
 
-if PrepareData.new.check_empty_string(day) == true
+if PrepareData.new.check_empty_string(day) == true ||
+   PrepareData.new.check_text_string(day) == true
   day = TimeGetter.day_getter('')
   month = TimeGetter.month_getter('')
   year = TimeGetter.year_getter('')
@@ -26,7 +27,8 @@ else
 
   month = gets.chomp
 
-  if PrepareData.new.check_empty_string(month) == true
+  if PrepareData.new.check_empty_string(month) == true ||
+     PrepareData.new.check_text_string(month) == true
     month = TimeGetter.month_getter('')
     year = TimeGetter.year_getter('')
   else
@@ -35,7 +37,8 @@ else
 
     year = gets.chomp
 
-    if PrepareData.new.check_empty_string(year) == true
+    if PrepareData.new.check_empty_string(year) == true ||
+       PrepareData.new.check_text_string(year) == true
       year = TimeGetter.year_getter('')
     else
       year = TimeGetter.year_getter(year)

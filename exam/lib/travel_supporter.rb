@@ -103,6 +103,15 @@ class PrepareData
     end
   end
 
+  def check_text_string(string)
+    string = string.to_i
+    if string == 0
+      true
+    else
+      false
+    end
+  end
+
   def casual_travel_time(time)
     travel_time = time.to_i
     travel_time
